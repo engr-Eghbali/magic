@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>fo test</h2>
+
+<button type="button" onclick="loadDoc()">Request test</button>
+
+<p id="demo"></p>
+ 
+<script>
+function loadDoc() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("demo").innerHTML = this.responseText;
+    }
+  };
+ // for (i=0;i<2;i++){
+  xhttp.open("POST", "http://localhost:3000/submit", true);
+  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhttp.send("id=8736&name=day&pass=me2&add=24#56#");
+//}
+}
+</script>
+
+</body>
+</html>
