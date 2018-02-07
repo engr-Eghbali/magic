@@ -17,12 +17,25 @@ function loadDoc() {
     }
   };
  // for (i=0;i<2;i++){
-  xhttp.open("POST", "http://localhost:3000/submit", true);
+  xhttp.open("POST", "http://localhost:3000/login", true);
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhttp.send("id=8736&name=day&pass=me2&add=24#56#");
+  xhttp.send("id=118736&name=1day&pass=1me2&add=124#156#");
 //}
-}
-</script>
 
+     var  server_response= responseText;
+
+     if (typeof(Storage) !== "undefined") {
+      // Store
+      
+      localStorage.setItem("magic", server_response);
+      // Retrieve
+      document.getElementById("demo").innerHTML = localStorage.getItem("magic");
+  } else {
+      document.getElementById("demo").innerHTML = "Sorry, your browser does not support Web Storage...";
+  }
+
+}
+
+  </script>
 </body>
 </html>

@@ -7,11 +7,12 @@ import (
 	"runtime"
 	"time"
 
-	magic "./pluginRZA"
-	magic_validation "./pluginRZA/authentication"
-	magic_security "./pluginRZA/authentication/layer2"
-	magic_struct "./pluginRZA/authentication/layer2/layer3/typedef"
+	magic "./plugins"
+	magic_validation "./plugins/authentication"
+	magic_security "./plugins/authentication/layer2"
+	magic_struct "./plugins/authentication/layer2/layer3/typedef"
 	_ "github.com/go-sql-driver/mysql"
+
 	cache "github.com/patrickmn/go-cache"
 	"github.com/unrolled/secure"
 	//"github.com/gocraft/dbr"
@@ -19,16 +20,18 @@ import (
 
 //////////////1/////////
 //import end
-func submitCTRL(w http.ResponseWriter, r *http.Request) {
+func submit_ctrl(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "text/javascript")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 
 	if r.Method == "POST" {
-		var input magic_struct .Userdata
+		var input magic_struct.Userdata
 		magic_validation.Initialsubmit(r, &input)
 		flg := magic_validation.Validation(&input, w, r)
+
 		if flg {
+
 			if flg = magic_security.Checkbrute(input.Uid, r); flg {
 				log.Print()
 				panic("++++++++brute danger++++++++\n")
@@ -51,13 +54,13 @@ func submitCTRL(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func loginCTRL(w http.ResponseWriter, r *http.Request) {
+func login_ctrl(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "text/javascript")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 
 	if r.Method == "POST" {
-		var input magic_struct .Userdata
+		var input magic_struct.Userdata
 		magic_validation.Initiallogin(r, &input)
 		flg := magic_validation.Validation(&input, w, r)
 		if flg {
@@ -69,6 +72,7 @@ func loginCTRL(w http.ResponseWriter, r *http.Request) {
 				if loginFLG {
 					log.Print()
 					f.Print("user login successfully\n")
+
 				} else {
 					log.Print()
 					f.Print("!!!!!!!!!!user failed to login!!!!!!!!!!!\n")
@@ -83,7 +87,7 @@ func loginCTRL(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func courierCRTL(w http.ResponseWriter, r *http.Request) {
+func courier_ctrl(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/javascript")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 
@@ -165,7 +169,7 @@ func main() {
 	http.ListenAndServe("127.0.0.1:3000", nil)
 
 	http.HandleFunc("/courier", func(w http.ResponseWriter, r *http.Request) {
-		courierCRTL(w, r)
+		courier_ctrl(w, r)
 	})
 	http.ListenAndServe(":9090", nil)
 
