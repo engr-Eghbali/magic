@@ -25,7 +25,7 @@
    <div id="menu" >
    </div>
    <div id="btn-container">
-    <button id="signein" class="btn1" onclick=""><a1>ثبت نام</a1></button>
+    <button id="back" class="btn1" onclick=""><a1> بازگشت</a1></button>
     <button id="login" class="btn1" onclick="" ><a1>ورود</a1></button>
 </div>
 </header>
@@ -35,9 +35,10 @@
     <ul>
         <li><div id="logo"></div></li>
         <li><input id="nameinpt" class="inpt" type="text" name="name" placeholder="    نام" autofocus></li>
-        <li><input id="phoneinpt" class="inpt" type="number" name="phone" placeholder="    شماره همراه" pattern="[0-9]{10}" required></li>
+        <li><input id="phoneinpt" class="inpt" type="text" name="phone" placeholder="    شماره همراه" pattern="[0-9]{11}" required></li>
         <li><input id="passinpt" class="inpt" type="password" name="pass" placeholder="    رمز عبور" required></li>
         <li><input id="passinpt2" class="inpt" type="password" name="pass2" placeholder="    تکرار رمز عبور" required></li>
+        <li><button id="submit" > ارسال</button></li>
     </ul>
 
 </div>

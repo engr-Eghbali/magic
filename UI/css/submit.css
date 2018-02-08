@@ -58,16 +58,16 @@ html*{
     position: fixed;
     margin-top: -1.8em;
 }
-#signein{
+#back{
 
     background-color: transparent;
     width: 30%;
     border: none;
     outline: none;
-    background-image: url("./img/key.svg");
+    background-image: url("./img/back.svg");
     background-repeat: no-repeat;
     background-size: 100% 100%;
-    background-position-x: 1em;
+    background-position-x: 1.2em;
     float: right;
 
 }
@@ -90,7 +90,8 @@ html*{
     height: 80%;
     display: flex;
     align-items: center;
-    margin-top: 10%;
+    text-align: center;
+    margin-top: 5%;
     margin-left: auto;
     margin-right: auto;
 }
@@ -113,4 +114,17 @@ html*{
     background-image: url("./img/magic.svg");
     background-size: 100% 100%;
    margin-top: 0;
+}
+#submit{
+    background-color: #0db480;
+    height: 2em;
+    width: 5em;
+    align-items: center;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    border: none;
+    border-radius: 20px;
+    outline: none;
+
 }
