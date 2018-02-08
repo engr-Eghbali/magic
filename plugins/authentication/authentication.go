@@ -62,8 +62,13 @@ func Initiallogin(r *http.Request, in *magic_struct.Userdata) {
 	r.ParseForm()
 
 	var tid string = r.Form["id"][0]
+	var err error
+	in.Geo.X, err = strconv.ParseFloat(strings.Split(in.Addr, "#")[1], 64)
+	checkErr(err)
+	in.Geo.Y, err = strconv.ParseFloat(strings.Split(in.Addr, "#")[2], 64)
+	//checkErr(err)
 
-	in.Geo.Y, in.Geo.X, in.Addr, in.Uname = 22.0000, 22.0000, r.Form["add"][0], r.Form["name"][0]
+	in.Addr, in.Uname = r.Form["add"][0], r.Form["name"][0]
 
 	in.Uid, _ = strconv.ParseInt(tid, 10, 0)
 
@@ -142,13 +147,13 @@ func Login(w http.ResponseWriter, r *http.Request, input magic_struct.Userdata) 
 	if input.Pass == magic_gcm.Decipher(pass) {
 
 		// create session here
-		fmt.Fprint(w, "login successfuly...")
+		fmt.Fprint(w, result.ID)
 
 		return true
 
 	} else {
 
-		fmt.Fprint(w, "login failed...")
+		fmt.Fprint(w, "login failed")
 		return false
 	}
 }
@@ -258,10 +263,12 @@ func Submit(w http.ResponseWriter, r *http.Request, input magic_struct.Userdata)
 	err = c.Insert(&magic_struct.Userdata{Uname: input.Uname, Uid: input.Uid, Pass: string(magic_gcm.Cipher(input.Pass)), Addr: input.Addr, Geo: input.Geo})
 
 	if err != nil {
-		panic(err)
+		fmt.Fprintf(w, "invalid or duplicated submit data")
 		return false
 	} else {
+		fmt.Fprintf(w, "submited")
 		return true
+
 	}
 
 }
