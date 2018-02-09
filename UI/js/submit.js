@@ -30,7 +30,7 @@ function submitForm() {
         location.reload();
     }else{
 
-        var data="id="+id+"&name="+name+"&pass="+pass1+"&add=123433#765432#";
+        var data="id="+id+"&name="+name+"&pass="+pass1+"&add=ESF#123433#765432#";
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
           if (this.readyState == 4 && this.status == 200) {

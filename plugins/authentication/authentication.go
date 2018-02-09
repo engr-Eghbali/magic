@@ -59,19 +59,18 @@ func Initialsubmit(r *http.Request, in *magic_struct.Userdata) {
 
 func Initiallogin(r *http.Request, in *magic_struct.Userdata) {
 
+	var err error = nil
 	r.ParseForm()
 
 	var tid string = r.Form["id"][0]
-	var err error
+	in.Addr, in.Uname = r.Form["add"][0], r.Form["name"][0]
 	in.Geo.X, err = strconv.ParseFloat(strings.Split(in.Addr, "#")[1], 64)
+
 	checkErr(err)
 	in.Geo.Y, err = strconv.ParseFloat(strings.Split(in.Addr, "#")[2], 64)
-	//checkErr(err)
-
-	in.Addr, in.Uname = r.Form["add"][0], r.Form["name"][0]
+	checkErr(err)
 
 	in.Uid, _ = strconv.ParseInt(tid, 10, 0)
-
 	in.Pass = r.Form["pass"][0]
 
 }
@@ -134,7 +133,7 @@ func Login(w http.ResponseWriter, r *http.Request, input magic_struct.Userdata) 
 	result := magic_struct.Userdata{}
 	log.Print(input.Uname)
 	log.Print(input.Pass)
-	err = c.Find(bson.M{"uname": input.Uname}).Select(bson.M{"pass": magic_gcm.Cipher(input.Pass)}).One(&result)
+	err = c.Find(bson.M{"uid": input.Uid}).Select(bson.M{"pass": magic_gcm.Cipher(input.Pass)}).One(&result)
 	if err != nil {
 		panic(err)
 	}

@@ -26,36 +26,31 @@ $(document).ready(function(){
         
     
         if(!pass && !id){
-            alert("Fill the forms");
+            alert("Fill the forms carefully...");
             location.reload();
         }else{
-    
-            var data="id="+id+"&name=login"+"&pass="+pass+"&add=1234.33#7654.32";
+           
+            var data="id="+id+"&name=user"+"&pass="+pass+"&add=esf#123433#765432#";
+            alert(data);
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
-                alert("ready and status 200");
-              }else{
-                  alert("check your connection");
+                
+                if (typeof(Storage) !== "undefined") {
+                    // Store
+                    
+                    localStorage.setItem("magic-login", this.responseText);
+                    // Retrieve
+                    alert(localStorage.getItem("magic-login"));
+                }
               }
             };
-           // for (i=0;i<2;i++){
+    
+           // for (i=0;i<2;i++){ 
             xhttp.open("POST", "http://localhost:3000/login", true);
             xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xhttp.send(data);
           //}
-               var  server_response= responseText;
-          
-               if (typeof(Storage) !== "undefined") {
-                // Store
-                
-                localStorage.setItem("magic-sub", server_response);
-                // Retrieve
-               alert(localStorage.getItem("magic"));
-            } else {
-                alert("cant support webstorage...");
-            }
-          
         }
        
       }
