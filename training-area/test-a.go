@@ -25,7 +25,7 @@ import (
 var (
 	inputPath  = flag.String("i", "./index.html", "input file path")
 	outputFile = flag.String("o", "", "output filename")
-	folderName = flag.String("f", "", "folder name")
+	folderName = flag.String("f", "./user1", "folder name")
 )
 
 // getClient uses a Context and Config to retrieve a Token
@@ -236,6 +236,7 @@ func main() {
 
 	ctx := context.Background()
 
+	//get google client secret
 	b, err := ioutil.ReadFile("client_secret.json")
 	if err != nil {
 		log.Fatalf("Unable to read client secret file: %v", err)
@@ -271,18 +272,17 @@ func main() {
 
 	uploadFile(srv, outputTitle, "", *folderName, mimeType, *inputPath)
 
-	/*
-		r, err := srv.Files.List().MaxResults(10).Do()
-		if err != nil {
-			log.Fatalf("Unable to retrieve files.", err)
+	r, err := srv.Files.List().MaxResults(10).Do()
+	if err != nil {
+		log.Fatalf("Unable to retrieve files.", err)
+	}
+	fmt.Println("Files:")
+	if len(r.Items) > 0 {
+		for _, i := range r.Items {
+			fmt.Printf("%s (%s)-(%s)\n", i.Title, i.Id, i.DownloadUrl)
 		}
-		fmt.Println("Files:")
-		if len(r.Items) > 0 {
-			for _, i := range r.Items {
-				fmt.Printf("%s (%s)\n", i.Title, i.Id)
-			}
-		} else {
-			fmt.Print("No files found.")
-		}
-	*/
+	} else {
+		fmt.Print("No files found.")
+	}
+
 }
