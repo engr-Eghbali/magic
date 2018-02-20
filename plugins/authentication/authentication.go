@@ -137,7 +137,7 @@ func Login(w http.ResponseWriter, r *http.Request, input magic_struct.Userdata) 
 	if err != nil {
 		panic(err)
 	}
-	log.Print("**\n")
+
 	f.Println("pass", result)
 	pass = []byte(result.Pass)
 
@@ -147,7 +147,13 @@ func Login(w http.ResponseWriter, r *http.Request, input magic_struct.Userdata) 
 
 		// create session here
 		fmt.Fprint(w, result.ID)
-
+		//log.Fatal(result.ID)
+		colQuerier := bson.M{"_id": result.ID}
+		change := bson.M{"$set": bson.M{"stat:": true}}
+		err = c.Update(colQuerier, change)
+		if err != nil {
+			panic(err)
+		}
 		return true
 
 	} else {
@@ -259,7 +265,7 @@ func Submit(w http.ResponseWriter, r *http.Request, input magic_struct.Userdata)
 	c := session.DB("magic").C("userInfo")
 
 	// Insert Datas
-	err = c.Insert(&magic_struct.Userdata{Uname: input.Uname, Uid: input.Uid, Pass: string(magic_gcm.Cipher(input.Pass)), Addr: input.Addr, Geo: input.Geo})
+	err = c.Insert(&magic_struct.Userdata{Uname: input.Uname, Uid: input.Uid, Pass: string(magic_gcm.Cipher(input.Pass)), Addr: input.Addr, Geo: input.Geo, Stat: true, Size: 1000000})
 
 	if err != nil {
 		fmt.Fprintf(w, "invalid or duplicated submit data")

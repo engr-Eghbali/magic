@@ -23,9 +23,9 @@ import (
 )
 
 var (
-	inputPath  = flag.String("i", "./index.html", "input file path")
-	outputFile = flag.String("o", "", "output filename")
-	folderName = flag.String("f", "./user1", "folder name")
+	inputPath  *string
+	outputFile *string
+	folderName *string
 )
 
 // getClient uses a Context and Config to retrieve a Token
@@ -228,6 +228,10 @@ func uploadFile(d *drive.Service, title string, description string,
 }
 
 func main() {
+
+	inputPath = flag.String("i", "./index.html", "input file path")
+	outputFile = flag.String("o", "", "output filename")
+	folderName = flag.String("f", "./user1", "folder name")
 	flag.Parse()
 
 	// fmt.Println("input: %s", *inputPath)

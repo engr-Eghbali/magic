@@ -7,12 +7,10 @@ import (
 	"runtime"
 	"time"
 
-	magic "./plugins"
 	magic_validation "./plugins/authentication"
 	magic_security "./plugins/authentication/layer2"
 	magic_struct "./plugins/authentication/layer2/layer3/typedef"
 	_ "github.com/go-sql-driver/mysql"
-
 	cache "github.com/patrickmn/go-cache"
 	"github.com/unrolled/secure"
 	//"github.com/gocraft/dbr"
@@ -66,16 +64,16 @@ func login_ctrl(w http.ResponseWriter, r *http.Request) {
 		if flg {
 			if false { //magic_security.Checkbrute(input.Uid, r); flg {
 				log.Print()
-				panic("++++++++brute danger++++++++\n")
+				panic("\n !++++++++brute danger++++++++!\n")
 			} else {
 				loginFLG := magic_validation.Login(w, r, input)
 				if loginFLG {
 					log.Print()
-					f.Print("user login successfully\n")
+					f.Print("\n -_-_-_-_-_user logon successfull_-_-_-_-_-_-\n")
 
 				} else {
 					log.Print()
-					f.Print("!!!!!!!!!!user failed to login!!!!!!!!!!!\n")
+					f.Print("\n!!!!!!!!!!_user failed to login_!!!!!!!!!!!\n")
 
 				}
 			}
@@ -106,11 +104,14 @@ func courier_ctrl(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func upload_ctrl(w http.ResponseWriter, r *http.Request) {
-	magic.Handle(w, r)
-}
+//-func upload_ctrl(w http.ResponseWriter, r *http.Request) {
+//-	magic.Handle(w, r)
+//-}
 
 var c = cache.New(5*time.Minute, 10*time.Minute)
+
+//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
 
 func main() {
 
@@ -166,7 +167,7 @@ func main() {
 
 	http.Handle("/submit", app1)
 	http.Handle("/login", app2)
-	http.ListenAndServe("127.0.0.1:3000", nil)
+	log.Fatal(http.ListenAndServe("127.0.0.1:3000", nil))
 
 	http.HandleFunc("/courier", func(w http.ResponseWriter, r *http.Request) {
 		courier_ctrl(w, r)

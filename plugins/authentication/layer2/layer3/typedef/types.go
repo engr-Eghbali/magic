@@ -28,6 +28,10 @@ type Userdata struct {
 	Addr string `json:"addr"`
 
 	Geo Location `json:"geo"`
+
+	Stat bool `json:"stat"`
+
+	Size int64 `json:"size"`
 }
 
 ///////////////////////////3//////////////////
@@ -47,4 +51,9 @@ type FileInfo struct {
 	Size    int64     // length in bytes for regular files; system-dependent for others
 	ModTime time.Time // modification time
 	IsDir   bool      // abbreviation for Mode().IsDir()
+}
+
+type UpDT struct {
+	ID   string `json:"id" bson:"_id,omitempty"`
+	Path string
 }

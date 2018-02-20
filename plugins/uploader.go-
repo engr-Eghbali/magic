@@ -1,0 +1,78 @@
+package magic
+
+import (
+	"fmt"
+	"io"
+	"log"
+	"net/http"
+	"os"
+
+	magic_struct "./authentication/layer2/layer3/typedef"
+	"github.com/labstack/echo"
+	mgo "gopkg.in/mgo.v2"
+	"gopkg.in/mgo.v2/bson"
+)
+
+func Upload(c echo.Context) error {
+
+	// Read form fields
+
+	U := &magic_struct.UpDT{ID: c.FormValue("ID"), Path: c.FormValue("path")}
+
+	Oid := bson.ObjectId(U.ID)
+	//mongo connect
+	session, err := mgo.Dial("127.0.0.1")
+	if err != nil {
+		panic(err)
+	}
+	defer session.Close()
+	session.SetMode(mgo.Monotonic, true)
+	////////
+	result := magic_struct.Userdata{}
+	cc := session.DB("magic").C("userInfo")
+
+	err = cc.Find(bson.M{"_id": Oid.Hex()}).One(&result)
+	if err != nil {
+		//redirect here
+		log.Fatal("%%%%%%%%%% testing %%%%%%%%%%")
+	}
+	if result.Stat {
+
+		log.Fatal("%%%%%%%%%%uplogin done %%%%%%%%%%")
+	}
+
+	//------------
+	// Read files
+	//------------
+
+	// Multipart form
+	form, err := c.MultipartForm()
+	if err != nil {
+		return err
+	}
+	files := form.File["files"]
+
+	for _, file := range files {
+		// Source
+		src, err := file.Open()
+		if err != nil {
+			return err
+		}
+		defer src.Close()
+
+		// Destination
+		dst, err := os.Create(file.Filename)
+		if err != nil {
+			return err
+		}
+		defer dst.Close()
+
+		// Copy
+		if _, err = io.Copy(dst, src); err != nil {
+			return err
+		}
+
+	}
+
+	return c.HTML(http.StatusOK, fmt.Sprintf("<p>Uploaded successfully %d files with fields name=%s and email=%s.</p>", len(files), U.ID, U.Path))
+}
