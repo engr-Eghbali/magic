@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"io"
 	"log"
@@ -68,9 +69,25 @@ func upload(c echo.Context) error {
 		}
 		defer dst.Close()
 
-		// Copy
-		if _, err = io.Copy(dst, src); err != nil {
-			return err
+		reader := bufio.NewReader(src)
+		writer := bufio.NewWriter(dst)
+		buffer := make([]byte, 1024)
+		for {
+			n, err := reader.Read(buffer)
+			if err != nil && err != io.EOF {
+				panic(err)
+			}
+			if n == 0 {
+				break
+			}
+
+			if _, err := writer.Write(buffer[:n]); err != nil {
+				panic(err)
+			}
+
+		}
+		if err = writer.Flush(); err != nil {
+			panic(err)
 		}
 
 	}
